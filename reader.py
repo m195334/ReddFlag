@@ -45,10 +45,11 @@ def tryFind(finder, searchName, f):
   else:
     f.write(searchName + " No Value\n")
 
-f = open("inClassExample.txt", "w")
-tryFind(adID, "ad ID: ", f)
+adID = "".join(adID.findall(parsed["content"]))
+f = open(adID + ".txt", "w")
+f.write("ad ID: " + adID + "\n")
 tryFind(targetedLocation, "Targeted Locations: ", f)
-tryFind(interest, "interest: ", f)
+tryFind(interest, "Interest: ", f)
 tryFind(people, "People Who Match: ", f)
 tryFind(excluded, "Excluded: ", f)
 tryFind(age, "Age: ", f)
