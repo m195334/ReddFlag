@@ -22,6 +22,7 @@ impressions = "ad\s*impressions\s*:?\s*([0-9]*)"
 clicks = "ad\s*clicks\s*:?\s*([0-9]*)"
 spend = "ad\s*spend\s*:?\s*([A-Za-z0-9()\t .]+)"
 redactions = "redactions|Select\s*Committee|US\s*House\s*Permanent"
+redaction1 = "Select\s*Committee"
 
 # SQL Commands
 
@@ -82,8 +83,6 @@ def findRemove(parsed, finder):
     m = re.search(finder, item[1], flags = re.VERBOSE|re.IGNORECASE)
     if m:
       parsed.pop(item[0])
-    else:
-      continue
   return parsed
 
 def main():
@@ -111,12 +110,13 @@ def main():
           parsed, data  = tryFind(parsed, clicks, data)
           parsed, data = tryFind(parsed, spend, data)
           parsed = findRemove(parsed, redactions)
+          parsed = findRemove(parsed, redaction1)
+          
           data.append("".join(parsed))
          
           cursor.execute("INSERT INTO CommitteeInfo (entryNumber, adID, targetLocation, interests, peopleMatch, excluded, age, language, placement, URL, adCreateDate, adEndDate, adImpression, adClicks, adSpend, imageLocation, adText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)", (None, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], os.path.join(root, file), data[14]))
           
           connection.commit()
-  
   connection.close()
 
 if __name__=="__main__":
