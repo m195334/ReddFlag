@@ -46,8 +46,7 @@ imageLocation VARCHAR(20),
 adText VARCHAR(100)
 );"""
 
-sql_command_insert = """INSERT INTO CommitteeInfo (entryNumber, adID, targetLocation, interests, peopleMatch, excluded, age, language, placement, URL, adCreateDate, adEndDate, adImpression, adClicks, adSpend, imageLocation, adText) 
-  VALUES (NULL, "{adID}", "{tL}","{i}","{pM}","{ex}", "{a}","{l}","{p}","{URL}","{aCT}", "{aED}", "{aI}", "{aC}", "{aS}", "{iP}", "{aT}");"""
+
 
 # This calls Tika to remove text from PDF and removes unneeded lines
 def getFileData(fileName):
@@ -56,11 +55,8 @@ def getFileData(fileName):
   parsed = parsed.splitlines()
   for x in range(0, len(parsed)):
     parsed[x] = parsed[x].encode('ascii', 'ignore')
-  #parsed = map(encode('ascii', 'ignore'), parsed)
   parsed = filter(None, parsed)
   return parsed
-  #except:
-    #print(fileName + " failed to open")
 
 # This searches through extracted text for datafields
 def tryFind(parsed, finder, data):
@@ -74,10 +70,10 @@ def tryFind(parsed, finder, data):
         return parsed, data
       else:
         continue
-    data.append(None)
+    data.append("Null")
     return parsed, data
   except:
-    data.append(None)
+    data.append("Null")
     return parsed, data
 
 # This searches through extracted text to remove unneeded text
@@ -116,10 +112,9 @@ def main():
           parsed, data = tryFind(parsed, spend, data)
           parsed = findRemove(parsed, redactions)
           data.append("".join(parsed))
-          
-          next_command = sql_command_insert.format(adID = data[0], tL = data[1], i = data[2], pM = data[3], ex = data[4], a = data[5], l = data[6], p = data[7], URL = data[8], aCT = data[9], aED = data[10], aI  = data[11], aC = data[12], aS = data[13], iP = os.path.join(root, file), aT = data[14])
          
-          cursor.execute(next_command)
+          cursor.execute("INSERT INTO CommitteeInfo (entryNumber, adID, targetLocation, interests, peopleMatch, excluded, age, language, placement, URL, adCreateDate, adEndDate, adImpression, adClicks, adSpend, imageLocation, adText) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)", (None, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], os.path.join(root, file), data[14]))
+          
           connection.commit()
   
   connection.close()
