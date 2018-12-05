@@ -21,8 +21,7 @@ timeEnd = "\s*End\s*Date\s*[0-9]+/[0-9]+/[0-9]+\s*[\S]*\s*[\S]*\s*[\S]*"
 impressions = "ad\s*impressions\s*:?\s*([0-9]*)"
 clicks = "ad\s*clicks\s*:?\s*([0-9]*)"
 spend = "ad\s*spend\s*:?\s*([A-Za-z0-9()\t .]+)"
-redactions = "redactions"
-houseComm = "Select\s*Committee"
+redactions = "redactions|Select\s*Committee|US\s*House\s*Permanent"
 
 # SQL Commands
 
@@ -52,30 +51,34 @@ sql_command_insert = """INSERT INTO CommitteeInfo (entryNumber, adID, targetLoca
 
 # This calls Tika to remove text from PDF and removes unneeded lines
 def getFileData(fileName):
-  try:
-    parsed = parser.from_file('../ads/2015-06/P(1)0002262.pdf')
-    parsed = parsed['content']
-    parsed = parsed.splitlines()
-    parsed = map(str, parsed)
-    parsed = filter(None, parsed)
-    return parsed
-  except:
-    print("fail")
-    sys.exit(0)
+  parsed = parser.from_file(fileName)
+  parsed = parsed['content']
+  parsed = parsed.splitlines()
+  for x in range(0, len(parsed)):
+    parsed[x] = parsed[x].encode('ascii', 'ignore')
+  #parsed = map(encode('ascii', 'ignore'), parsed)
+  parsed = filter(None, parsed)
+  return parsed
+  #except:
+    #print(fileName + " failed to open")
 
 # This searches through extracted text for datafields
-def tryFind(parsed, finder, searchName, data):
-  for item in enumerate(parsed):
-    m = re.search(finder, item[1], flags = re.VERBOSE|re.IGNORECASE)
-    if m:
-      match = m.groups(0)[0]
-      data.append(match)
-      parsed.pop(item[0])
-      return parsed, data
-    else:
-      continue
-  data.append(None)
-  return parsed, data
+def tryFind(parsed, finder, data):
+  try:
+    for item in enumerate(parsed):
+      m = re.search(finder, item[1], flags = re.VERBOSE|re.IGNORECASE)
+      if m:
+        match = m.groups(0)[0]
+        data.append(match)
+        parsed.pop(item[0])
+        return parsed, data
+      else:
+        continue
+    data.append(None)
+    return parsed, data
+  except:
+    data.append(None)
+    return parsed, data
 
 # This searches through extracted text to remove unneeded text
 def findRemove(parsed, finder):
@@ -83,39 +86,42 @@ def findRemove(parsed, finder):
     m = re.search(finder, item[1], flags = re.VERBOSE|re.IGNORECASE)
     if m:
       parsed.pop(item[0])
+    else:
+      continue
   return parsed
 
 def main():
   
-  connection = sqlite3.connect("committeeInfo.db")
+  connection = sqlite3.connect("CommitteeInfo.db")
   cursor = connection.cursor()
   cursor.execute(sql_command_table_create)
- 
-  for root, dirs, filenames in os.walk("/home/m195334/Desktop/ads/"):
-    for x in filenames:
-      if x.endswith(".pdf"):
-        data = []
-        parsed = getFileData("/home/m195334/Desktop/ads/" + x)
-        parsed, data = tryFind(parsed, adID, "Ad ID: ", data)
-        parsed, data = tryFind(parsed, targetedLocation, "Targeted Locations: ", data)
-        parsed, data  = tryFind(parsed, interest, "Interest: ", data)
-        parsed, data  = tryFind(parsed, people, "People Who Match: ", data)
-        parsed, data  = tryFind(parsed, excluded, "Excluded: ", data)
-        parsed, data  = tryFind(parsed, age, "Age: ", data)
-        parsed, data  = tryFind(parsed, language, "Language: ", data)
-        parsed, data  = tryFind(parsed, placement, "Placement: ", data)
-        parsed, data  = tryFind(parsed, URL, "URL: ", data)
-        parsed, data  = tryFind(parsed, time, "Ad Creation Date: ", data)
-        parsed, data  = tryFind(parsed, timeEnd, "Ad End Date: ", data)
-        parsed, data  = tryFind(parsed, impressions, "Ad Impressions: ", data)
-        parsed, data  = tryFind(parsed, clicks, "Ad Clicks: ", data)
-        parsed, data = tryFind(parsed, spend, "Ad Spend: ", data)
-        parsed = findRemove(parsed, redactions)
-        parsed = findRemove(parsed, houseComm)
-        data.append("".join(parsed))
-        next_command = sql_command_insert.format(adID =data[0], tL = data[1], i = data[2], pM = data[3], ex = data[4], a = data[5], l = data[6], p = data[7], URL = data[8], aCT = data[9], aED = data[10], aI  = data[11], aC = data[12], aS = data[13], iP = x, aT = data[14])
-        cursor.execute(next_command)
-        connection.commit()
+
+  for root, dirs, files in os.walk(os.path.abspath("/home/m195334/Desktop/ads/")):
+    for file in files:
+          data = []
+          parsed = getFileData(os.path.join(root, file))
+          parsed, data = tryFind(parsed, adID, data)
+          parsed, data = tryFind(parsed, targetedLocation, data)
+          parsed, data  = tryFind(parsed, interest, data)
+          parsed, data  = tryFind(parsed, people, data)
+          parsed, data  = tryFind(parsed, excluded, data)
+          parsed, data  = tryFind(parsed, age, data)
+          parsed, data  = tryFind(parsed, language, data)
+          parsed, data  = tryFind(parsed, placement, data)
+          parsed, data  = tryFind(parsed, URL,  data)
+          parsed, data  = tryFind(parsed, time, data)
+          parsed, data  = tryFind(parsed, timeEnd,  data)
+          parsed, data  = tryFind(parsed, impressions, data)
+          parsed, data  = tryFind(parsed, clicks, data)
+          parsed, data = tryFind(parsed, spend, data)
+          parsed = findRemove(parsed, redactions)
+          data.append("".join(parsed))
+          
+          next_command = sql_command_insert.format(adID = data[0], tL = data[1], i = data[2], pM = data[3], ex = data[4], a = data[5], l = data[6], p = data[7], URL = data[8], aCT = data[9], aED = data[10], aI  = data[11], aC = data[12], aS = data[13], iP = os.path.join(root, file), aT = data[14])
+         
+          cursor.execute(next_command)
+          connection.commit()
+  
   connection.close()
 
 if __name__=="__main__":
