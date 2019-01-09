@@ -136,7 +136,7 @@ def main():
   cursor = connection.cursor()
   cursor.execute(sql_command_table_create)
 
-  for root, dirs, files in os.walk(os.path.abspath("/home/m195334/Desktop/ads/")):
+  for root, dirs, files in os.walk(os.path.abspath("/home/m195334/Desktop/ReddFlag/ads/")):
     for file in files:
           data = []
           parsed = getFileData(os.path.join(root, file))
