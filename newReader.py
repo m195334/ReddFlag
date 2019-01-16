@@ -5,6 +5,8 @@ import re
 from tika import parser
 import sqlite3
 import os
+from pdf2image import *
+
 
 # Regular Expression Outlines
 adID = "\s*a\s*d\s*i\s*d\s*([0-9]*)"
@@ -29,6 +31,33 @@ redaction3 = "\s*ad\s*targeting\s*"
 redaction4 = "\s*ad\s*spend\s*"
 redaction5 = "\s*Ad\s*creation\s*"
 redaction6 = "\s*Ad\s*end\s*"
+blackCulture ="\s*"
+police = ""
+refugee = ""
+texas = ""
+southernCulture = ""
+seperatist = ""
+muslim = ""
+christian = ""
+lgbt = ""
+nativeAm = ""
+meme = ""
+redPill = ""
+patriotism = ""
+liberal = ""
+veteran = ""
+gunRights = ""
+syria = ""
+isis = ""
+media = ""
+news = ""
+trump = ""
+clinton = ""
+sanders = ""
+otherCandidates = ""
+vote_fraud = ""
+vote_misdirection = ""
+vote_suppression = ""
 
 
 
@@ -136,9 +165,14 @@ def main():
   cursor = connection.cursor()
   cursor.execute(sql_command_table_create)
 
-  for root, dirs, files in os.walk(os.path.abspath("/home/m195334/Desktop/ReddFlag/ads/")):
+  for root, dirs, files in os.walk(os.path.abspath("ads/")):
     for file in files:
           data = []
+          print root, dirs, file
+          #fname =  open("ads/2015-06/" + file,"r")
+          # pages = convert_from_path("ads/2015-06/" + file, 500,output_folder='ads/img',last_page=True)
+          # for page in pages:
+          #   page.save(file + '.png')
           parsed = getFileData(os.path.join(root, file))
           parsed, data = tryFind(parsed, adID, data)
           parsed, data = tryFind(parsed, targetedLocation, data)
