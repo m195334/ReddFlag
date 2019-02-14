@@ -1,0 +1,20 @@
+Convert PDF ads to image
+
+Make sure convert.sh is in a directory above the ads, therefore it
+should be in the main directory that hass the reader and eveything else.
+
+To run, do the following command
+
+./convert.sh
+
+If it does not run, do chmod +x convert.sh
+
+Next, some ads without a 2nd page will create an empty .png file. in
+order to remove them, run the program delEmpty.sh
+"./delEmpty.sh". This removes all files with size 0 recursively.
+
+The output should be a folder in YEAR_MONTH_img format. Inside, all
+the Ads will be in .png format. The filename of the photo is
+associated with the filename of the .pdf ad.
+
+
