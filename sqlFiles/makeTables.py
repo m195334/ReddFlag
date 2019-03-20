@@ -54,6 +54,38 @@ avgWordLength INTEGER);"""
 PhotoCollectionCreateStatement = '''
 CREATE TABLE IF NOT EXISTS PhotoCollection (EntryNumber INTEGER PRIMARY KEY, photo BLOB, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));'''
 
+GiantBinaryCreate = '''CREATE TABLE IF NOT EXISTS BinaryAll (
+EntryNumber INTEGER PRIMARY KEY,
+BlackCulture INTEGER,
+BlueLives INTEGER,
+Christian INTEGER,
+Clinton INTEGER,
+LatinX INTEGER,
+Immigration INTEGER,
+Constitution INTEGER,
+WhiteSupremacy INTEGER,
+LGBTQ INTEGER,
+LiberalFeminism INTEGER,
+Media INTEGER,
+Muslim INTEGER,
+NativeAmerican INTEGER,
+Patriot INTEGER,
+RedPill INTEGER,
+Refugees INTEGER,
+Sanders INTEGER,
+SecondAmendment INTEGER,
+Seperatist INTEGER,
+SouthernCulture INTEGER,
+Syria INTEGER,
+Texas  INTEGER,
+Trump INTEGER,
+Veterans INTEGER,
+otherCandidates INTEGER,
+voterFraud INTEGER,
+voterMisdirection INTEGER,
+voterTurnoutSuppression INTEGER,
+FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));'''
+
 BinaryFlagCreateStatements = [
 'CREATE TABLE IF NOT EXISTS BlackCulture (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));',
 'CREATE TABLE IF NOT EXISTS BlueLives (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));',
@@ -79,7 +111,9 @@ BinaryFlagCreateStatements = [
 'CREATE TABLE IF NOT EXISTS otherCandidates (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));',
 'CREATE TABLE IF NOT EXISTS voterFraud (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));',
 'CREATE TABLE IF NOT EXISTS voterMisdirection (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));',
-'CREATE TABLE IF NOT EXISTS voterTurnoutSuppression (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL);']
+'CREATE TABLE IF NOT EXISTS voterTurnoutSuppression (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL);', 
+'CREATE TABLE IF NOT EXISTS Immigration (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));', 
+'CREATE TABLE IF NOT EXISTS Constitution (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));', 'CREATE TABLE IF NOT EXISTS WhiteSupremacy (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));', 'CREATE TABLE IF NOT EXISTS LatinX (EntryNumber INTEGER PRIMARY KEY, Valence INTEGER NULL, FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));']
 
 
 def main():
@@ -87,6 +121,7 @@ def main():
       cursor = connection.cursor()
       cursor.execute(MainCreateStatement)
       cursor.execute(PhotoCollectionCreateStatement)
+      cursor.execute(GiantBinaryCreate)
       for x in BinaryFlagCreateStatements:
           cursor.execute(x)
 
