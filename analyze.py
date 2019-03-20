@@ -5,6 +5,10 @@ import pickle as pk
 from sklearn.cluster import KMeans, MiniBatchKMeans
 import math
 
+   
+adTextFile = open('adText.txt','r')
+adList = adTextFile.readlines()
+
 def preprocess():
    data =  pd.read_csv('AdMatrix.csv', sep=',')
    data = np.array(data)
@@ -17,6 +21,20 @@ def retrieve():
     ratings = pk.load(open('ads.pkl','rb'))
     return ratings
 
+def bestK(data):
+   inertiaList = []
+   X = list(range(2,30))
+   print(X)
+   for n in range(2,30):
+      res = KMeans(init='k-means++').fit(data)
+      inertiaList.append(res.inertia_)
+
+   plt.plot(X,inertiaList)
+   plt.show()
+   
+   
+
+ 
 def kMeans(data):
    nclust = 8
    res = KMeans(init='k-means++').fit(data)
@@ -24,15 +42,24 @@ def kMeans(data):
    for k in range(nclust):
       clst = np.where(res.labels_ == k)
       clst = clst[0]*1
-      print(clst)
       clusterlist.append(clst)
 
-   print(clusterlist)
-   
-   
+   i = 0
+   for clust in clusterlist:
+      f = open('cluster' + str(i) + '.txt','w')
+      for c in clust:
+         f.write(adList[c])
+      i += 1
 
 ratings = retrieve()
-kMeans(ratings)
+
+#kMeans(ratings)
+bestK(ratings)
+
+
+
+
+
 
 # Code fixed Csv. Now all numbers. 0 where there is no rating
 ############################################
