@@ -10,12 +10,14 @@ adTextFile = open('adText.txt','r')
 adList = adTextFile.readlines()
 
 def preprocess():
-   data =  pd.read_csv('AdMatrix.csv', sep=',')
-   data = np.array(data)
-
+   #data =  pd.read_csv('AdMatrix.csv', sep=',')
+   #data = np.array(data)
    #txtFile = open('adText.txt','r')
- 
-   pk.dump(data,open('ads.pkl','wb'))
+   #pk.dump(data,open('ads.pkl','wb'))
+
+   mainTable =  pd.read_csv('mainMat.csv', sep=',')
+   mainTable = np.array(mainTable,dtype=object)
+   pk.dump(mainTable,open('main.pkl','wb'))
 
 def retrieve():
     ratings = pk.load(open('ads.pkl','rb'))
@@ -51,10 +53,20 @@ def kMeans(data):
          f.write(adList[c])
       i += 1
 
-ratings = retrieve()
-
+def spentVClick(main):
+  spent= main[main[:,8].argsort()]
+  X = main[:,8]
+  Y = main[:,7]
+  plt.scatter(X,Y,s=5)
+  plt.show()
+      
+#ratings = retrieve()
 #kMeans(ratings)
-bestK(ratings)
+#bestK(ratings)
+
+main = pk.load(open('main.pkl','rb'))
+
+spentVClick(main)
 
 
 

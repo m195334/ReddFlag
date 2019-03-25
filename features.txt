@@ -1,0 +1,41 @@
+EntryNumber
+AdID
+JSON_name
+FileName
+StartDate
+EndDate
+Impressions
+Clicks
+Spent
+AdText
+ImageText
+HashTags
+AdLandingPage
+CustomIncludes
+Junk
+AT_Placements
+AT_Age
+AT_Location
+AT_Language
+AT_Loose
+AT_Gender
+AT_PM_All
+AT_PM_Behaviors	AT_PM_FieldOfStudy
+AT_PM_Politics	AT_PM_Interests
+AT_PM_FriendsOfConnections
+AT_PM_MulticulturalAffinity
+AT_PM_PeopleWhoLike
+AT_PM_Industry
+AT_PM_Employers	AT_AM_All
+AT_AM_Interests	AT_AM_Politics
+AT_AM_Behaviors
+AT_AM_MulticulturalAffinity
+AT_AM_Industry
+AT_AM_Employers
+AT_EC_All
+AT_EC_ExcludePeopleWhoLike
+AT_EC_ExcludePeopleWhoAreGoingTo
+AT_EX_All
+AT_EX_MulticulturalAffinity
+AT_EX_Behaviors
+avgWordLength
