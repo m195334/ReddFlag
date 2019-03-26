@@ -9,6 +9,7 @@ import populateMain
 import populateBinary
 import makeTables
 import addValences
+import makeView
 
 def main():
     deleteMain.main()
@@ -17,5 +18,6 @@ def main():
     populateMain.main()
     #populateBinary.main()
     addValences.main()
+    makeView.main()
 if __name__ == '__main__':
     main()
