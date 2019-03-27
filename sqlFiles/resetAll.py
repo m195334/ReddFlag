@@ -2,21 +2,18 @@
 import sys
 import sqlite3
 import os
-import deleteMain
 import deletePhotoTable
 import deleteBinaryTables
-import populateMain
-import populateBinary
-import makeTables
 import addValences
 import makeView
-
+import populateMainFromUpdated
+import makeTablesUpdatedMain
+import deleteMain
 def main():
     deleteMain.main()
     deleteBinaryTables.main()
-    makeTables.main()
-    populateMain.main()
-    #populateBinary.main()
+    makeTablesUpdatedMain.main()
+    populateMainFromUpdated.main()
     addValences.main()
     makeView.main()
 if __name__ == '__main__':
