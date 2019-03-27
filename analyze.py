@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import pickle as pk
 from sklearn.cluster import KMeans, MiniBatchKMeans
 import math
+import re
+from collections import Counter
 
    
 adTextFile = open('adText.txt','r')
@@ -59,14 +61,34 @@ def spentVClick(main):
   Y = main[:,7]
   plt.scatter(X,Y,s=5)
   plt.show()
-      
+
+
+def geodist(m):
+   country =[x for x in m if str(x[18]) != 'nan']
+   state = [x for x in m if str(x[19]) != 'nan']
+   city = [x for x in m if str(x[20]) != 'nan']
+
+   stlist = []
+   for s in state:
+      x = s[19].split(';')
+      for item in x:
+         item = item.strip(' `')
+         stlist.append(item)
+   stlist = np.array(stlist)
+   c = Counter(stlist)
+   c = c.items()
+   c = sorted(c,key=lambda x: x[0])
+   f = open('stateDistribution.txt','w')
+   for item in c:
+      f.write(str(item[0]) + ': ' + str(item[1]) + '\n')
 #ratings = retrieve()
 #kMeans(ratings)
 #bestK(ratings)
 
 main = pk.load(open('main.pkl','rb'))
+geodist(main)
 
-spentVClick(main)
+
 
 
 

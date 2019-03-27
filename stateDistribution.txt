@@ -1,0 +1,44 @@
+: 2
+Alabama: 14
+Arizona: 13
+Arkansas: 6
+Austin (+10 mi) Texas: 2
+California: 104
+Connecticut: 3
+Delaware: 3
+District of Columbia: 5
+Florida: 43
+Georgia: 122
+Idaho: 3
+Illinois: 57
+Iowa: 1
+Kansas: 10
+Louisiana: 70
+Maine: 1
+Maryland: 263
+Massachusetts: 4
+Michigan: 36
+Minnesota: 25
+Mississippi: 15
+Missouri: 240
+Nebraska: 1
+Nevada: 1
+New Hampshire: 1
+New Jersey: 10
+New Mexico: 13
+New York: 165
+New York. Ohio: 1
+North Carolina: 27
+Ohio: 168
+Oklahoma: 9
+Pennsylvania: 20
+Rhode Island: 1
+South Carolina: 11
+Tennessee: 8
+Texas: 94
+Vermont: 3
+Virginia: 50
+Washington: 7
+Washington. District of Columbia: 29
+West Virginia: 1
+Wisconsin: 59
