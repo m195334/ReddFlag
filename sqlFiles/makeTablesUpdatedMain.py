@@ -153,8 +153,8 @@ def main():
       cursor.execute(MainCreateStatement)
       cursor.execute(PhotoCollectionCreateStatement)
       cursor.execute(GiantBinaryCreate)
-      for x in BinaryFlagCreateStatements:
-          cursor.execute(x)
+      #for x in BinaryFlagCreateStatements:
+          #cursor.execute(x)
 
 if __name__ == '__main__':
     main()
