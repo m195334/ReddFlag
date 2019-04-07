@@ -22,8 +22,8 @@ ViewCreate2 = '''
 CREATE VIEW AllDataLeftJoin
 AS
 SELECT *
-FROM BinaryAll
-LEFT OUTER JOIN MainTable ON MainTable.EntryNumber = BinaryAll.EntryNumber
+FROM MainTable
+LEFT OUTER JOIN BinaryAll ON MainTable.EntryNumber = BinaryAll.EntryNumber
 ;'''
 
 
