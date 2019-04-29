@@ -113,6 +113,7 @@ voterMisdirection INTEGER NULL,
 VMVal INTEGER NULL,
 voterTurnoutSuppression INTEGER NULL,
 VTSVal INTEGER NULL,
+NoCategory INTEGER NULL,
 FOREIGN KEY(EntryNumber) REFERENCES MainTable(EntryNumber));'''
 
 BinaryFlagCreateStatements = [
